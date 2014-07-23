@@ -1,0 +1,5 @@
+certifi==14.05.14
+greenlet==0.4.2
+motor==0.3.2
+pymongo==2.7.1
+tornado==4.0
