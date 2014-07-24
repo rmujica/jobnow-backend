@@ -1,0 +1,16 @@
+from tornado.web import RequestHandler
+from tornado import gen
+
+class ReadUserHandler(RequestHandler):
+    @gen.coroutine
+    def get(self, id):
+        # query collection using id
+        db = self.settings["db"]
+        result = yield db.users.find_one({"_id": id})
+
+        self.write(result)
+
+    @gen.coroutine
+    def post(self):
+        # not allowed to use get on /users/(id)
+        self.send_error(405)

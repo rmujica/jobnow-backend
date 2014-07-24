@@ -3,13 +3,14 @@ from tornado.web import Application, url
 import motor
 import os
 
-import handlers.index
-import handlers.users
+from handlers.index import IndexHandler
+from handlers.users import CreateUserHandler, 
 
 # system routes
 routes = [
-    url(r"/", handlers.index.IndexHandler),
-    url(r"/users/", handlers.users.CreateHandler),
+    url(r"/", IndexHandler),
+    url(r"/users/", CreateUserHandler),
+    url(r"/users/([0-9]+)", ReadUserHandler),
 ]
 
 application = Application(routes)
