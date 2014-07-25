@@ -6,13 +6,15 @@ import os
 from handlers.index.index import IndexHandler
 from handlers.users.create import CreateUserHandler
 from handlers.users.read import ReadUserHandler
+from handlers.users.login import LoginUserHandler
 
 # system routes
 routes = [
     url(r"/", IndexHandler),
-    url(r"/users/", CreateUserHandler),
+    url(r"/users", CreateUserHandler),
     url(r"/users/(\w+)", ReadUserHandler),
-    url(r"/offers/", CreateOfferHandler),
+    url(r"/users/login", LoginUserHandler),
+    url(r"/offers", CreateOfferHandler),
 ]
 
 # mongo init

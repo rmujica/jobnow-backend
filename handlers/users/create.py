@@ -11,10 +11,17 @@ class CreateUserHandler(RequestHandler):
     @gen.coroutine
     def post(self):
         user = dict()
-        user["first_name"] = self.get_argument("first_name")
-        user["last_name"]  = self.get_argument("last_name")
-        user["born"]       = self.get_argument("born")
-        user["email"]      = self.get_argument("email")
+        user_type = self.get_argument("type")
+        user["email"]    = self.get_argument("email")
+        user["password"] = self.get_argument("password")
+        if user_type == "u":
+            user["first_name"] = self.get_argument("first_name")
+            user["last_name"]  = self.get_argument("last_name")
+            user["born"]       = self.get_argument("born")
+        elif user_type == "b":
+            user["name"]        = self.get_argument("name")
+            user["business_id"] = self.get_argument("business_id")
+            user["phone"]       = self.get_argument("phone")
 
         # add new record to db
         db = self.settings["db"]

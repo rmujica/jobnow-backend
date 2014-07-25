@@ -15,6 +15,7 @@ class CreateOfferHandler(RequestHandler):
         user["last_name"]  = self.get_argument("last_name")
         user["born"]       = self.get_argument("born")
         user["email"]      = self.get_argument("email")
+        user["password"]   = self.get_argument("password")
 
         # add new record to db
         db = self.settings["db"]
