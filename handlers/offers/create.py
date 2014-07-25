@@ -12,12 +12,9 @@ class CreateOfferHandler(RequestHandler):
     def post(self):
         offer = dict()
         offer["business_name"] = self.get_argument("business_name")
-        offer["offer_name"]  = self.get_argument("offer_name")
-        offer["description"]       = self.get_argument("description")
-        try:
-            offer["price"]       = int(self.get_argument("price"))
-        except ValueError:
-            self.send_error(400)
+        offer["offer_name"]    = self.get_argument("offer_name")
+        offer["description"]   = self.get_argument("description") 
+        offer["price"]         = self.get_argument("price")
         offer["price_details"] = self.get_argument("price_details")
         
 
@@ -27,8 +24,8 @@ class CreateOfferHandler(RequestHandler):
 
         # return created json
         offer = yield db.offers.find_one({"_id": _id})
-        offer["_id"] = str(offers["_id"])
+        offer["_id"] = str(offer["_id"])
         self.set_status(201)
-        self.write(offers)
+        self.write(offer)
 
         self.finish()
