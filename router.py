@@ -12,6 +12,7 @@ routes = [
     url(r"/", IndexHandler),
     url(r"/users/", CreateUserHandler),
     url(r"/users/(\w+)", ReadUserHandler),
+    url(r"/offers/", CreateOfferHandler),
 ]
 
 # mongo init
