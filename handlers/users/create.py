@@ -4,11 +4,6 @@ from bson.objectid import ObjectId
 
 class CreateUserHandler(RequestHandler):
     @gen.coroutine
-    def get(self):
-        # not allowed to use get on /users
-        self.send_error(405)
-
-    @gen.coroutine
     def post(self):
         user = dict()
         user_type = self.get_argument("type")

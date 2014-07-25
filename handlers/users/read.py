@@ -24,8 +24,3 @@ class ReadUserHandler(RequestHandler):
             user["_id"] = str(user["_id"])
         self.write(user)
         self.finish()
-
-    @gen.coroutine
-    def post(self, uid):
-        # not allowed to use post on /users/(uid)
-        self.send_error(405)

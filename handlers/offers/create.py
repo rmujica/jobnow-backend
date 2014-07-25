@@ -4,11 +4,6 @@ from bson.objectid import ObjectId
 
 class CreateOfferHandler(RequestHandler):
     @gen.coroutine
-    def get(self):
-        # not allowed to use get on /offers
-        self.send_error(405)
-
-    @gen.coroutine
     def post(self):
         user = dict()
         user["first_name"] = self.get_argument("first_name")

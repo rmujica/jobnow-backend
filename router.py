@@ -13,8 +13,8 @@ from handlers.offers.create import CreateOfferHandler
 routes = [
     url(r"/", IndexHandler),
     url(r"/users", CreateUserHandler),
-    url(r"/users/(\w+)", ReadUserHandler),
     url(r"/users/login", LoginUserHandler),
+    url(r"/users/(\w+)", ReadUserHandler),
     url(r"/offers", CreateOfferHandler),
 ]
 

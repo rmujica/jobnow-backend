@@ -5,11 +5,6 @@ from bson.errors import InvalidId
 
 class LoginUserHandler(RequestHandler):
     @gen.coroutine
-    def get(self):
-        # not allowed to use get on /users/login
-        self.send_error(405)
-
-    @gen.coroutine
     def post(self):
         search = {
             "email": self.get_argument("email"),
@@ -17,6 +12,7 @@ class LoginUserHandler(RequestHandler):
         }
 
         # search using login data
+        db = self.settings["db"]
         user = yield db.users.find_one(search)
         if user is None:
             # 404: resource not found
