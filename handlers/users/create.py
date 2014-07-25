@@ -1,5 +1,6 @@
 from tornado.web import RequestHandler
 from tornado import gen
+from bson.objectid import ObjectId
 
 class CreateUserHandler(RequestHandler):
     @gen.coroutine
@@ -17,4 +18,12 @@ class CreateUserHandler(RequestHandler):
 
         # add new record to db
         db = self.settings["db"]
-        result = yield db.users.insert(user)
+        _id = yield db.users.insert(user)
+
+        # return created json
+        user = yield db.users.find_one({"_id": _id})
+        user["_id"] = str(user["_id"])
+        self.set_status(201)
+        self.write(user)
+
+        self.finish()

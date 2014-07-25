@@ -11,7 +11,7 @@ from handlers.users.read import ReadUserHandler
 routes = [
     url(r"/", IndexHandler),
     url(r"/users/", CreateUserHandler),
-    url(r"/users/([0-9]+)", ReadUserHandler),
+    url(r"/users/(\w+)", ReadUserHandler),
 ]
 
 # mongo init
