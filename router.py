@@ -7,6 +7,7 @@ from handlers.index.index import IndexHandler
 from handlers.users.create import CreateUserHandler
 from handlers.users.read import ReadUserHandler
 from handlers.users.login import LoginUserHandler
+from handlers.offers.create import CreateOfferHandler
 
 # system routes
 routes = [

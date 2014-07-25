@@ -27,6 +27,5 @@ class ReadUserHandler(RequestHandler):
 
     @gen.coroutine
     def post(self, uid):
-        # not allowed to use get on /users/(uid)
+        # not allowed to use post on /users/(uid)
         self.send_error(405)
-        self.finish()
