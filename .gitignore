@@ -52,3 +52,25 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+venv
+pyvenv.cfg
+.env
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# SublimeText project files
+*.sublime-workspace
+*.py[cod]
+*.dump
+
+
