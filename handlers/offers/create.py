@@ -2,6 +2,8 @@ from tornado.web import RequestHandler
 from tornado import gen
 from bson.objectid import ObjectId
 
+from keywords.rake import Rake
+
 class CreateOfferHandler(RequestHandler):
     @gen.coroutine
     def get(self):
@@ -16,7 +18,12 @@ class CreateOfferHandler(RequestHandler):
         offer["description"]   = self.get_argument("description") 
         offer["price"]         = self.get_argument("price")
         offer["price_details"] = self.get_argument("price_details")
-        
+
+        # extract keywords from corpus
+        text = offer["offer_name"] + " " + offer["description"]
+        rake = Rake("keywords/spanish.stop")
+        keywords = rake.run(text)
+        offer["keywords"] = keywords
 
         # add new record to db
         db = self.settings["db"]
@@ -27,5 +34,14 @@ class CreateOfferHandler(RequestHandler):
         offer["_id"] = str(offer["_id"])
         self.set_status(201)
         self.write(offer)
-
         self.finish()
+
+        # # extract keywords from corpus
+        # text = offer["offer_name"] + " " + offer["description"]
+        # rake = Rake("keywords/spanish.stop")
+        # keywords = rake.run(text)
+
+        # # update db
+        # db = self.settings["db"]
+        # result = yield db.offers.update({"_id": offer["_id"]}, {"$set": {"keywords": keywords}})
+
