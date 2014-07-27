@@ -6,11 +6,6 @@ from keywords.rake import Rake
 
 class CreateOfferHandler(RequestHandler):
     @gen.coroutine
-    def get(self):
-        # not allowed to use get on /offers
-        self.send_error(405)
-
-    @gen.coroutine
     def post(self):
         offer = dict()
         offer["business_name"] = self.get_argument("business_name")
