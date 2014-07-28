@@ -1,6 +1,5 @@
 from tornado.web import RequestHandler
 from tornado import gen
-from bson.objectid import ObjectId
 
 class CreateUserHandler(RequestHandler):
     @gen.coroutine
