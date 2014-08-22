@@ -17,14 +17,26 @@ class CreateUserHandler(RequestHandler):
             user["business_id"] = self.get_argument("business_id")
             user["phone"]       = self.get_argument("phone")
 
-        # add new record to db
+        search = {
+            "email": user["email"],
+        }
+
+        # search if user exists
         db = self.settings["db"]
-        _id = yield db.users.insert(user)
+        user = yield db.users.find_one(search)
+        
+        if user is None:
+            # add new record to db
+            db = self.settings["db"]
+            _id = yield db.users.insert(user)
 
-        # return created json
-        user = yield db.users.find_one({"_id": _id})
-        user["_id"] = str(user["_id"])
-        self.set_status(201)
-        self.write(user)
+            # return created json
+            user = yield db.users.find_one({"_id": _id})
+            user["_id"] = str(user["_id"])
+            self.set_status(201)
+            self.write(user)
 
-        self.finish()
+            self.finish()
+        else:
+            # 404: resource not found
+            self.send_error(404)
