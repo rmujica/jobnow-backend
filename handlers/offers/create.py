@@ -29,3 +29,21 @@ class CreateOfferHandler(RequestHandler):
         self.set_status(201)
         self.write(offer)
         self.finish()
+
+    @gen.coroutine
+    def get(self):
+        offers = list()
+
+        # get all offers
+        db = self.settings["db"]
+        cursor = db.offers.find()
+        i = 0
+        while (yield cursor.fetch_next):
+            offer = cursor.next_object()
+            offer["_id"] = str(offer["_id"])
+            offers.append(offer)
+
+        # return offers
+        self.set_status(200)
+        self.write({"result": offers})
+        self.finish()
