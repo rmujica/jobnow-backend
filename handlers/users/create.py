@@ -23,11 +23,10 @@ class CreateUserHandler(RequestHandler):
 
         # search if user exists
         db = self.settings["db"]
-        user = yield db.users.find_one(search)
+        search_result = yield db.users.find_one(search)
         
-        if user is None:
+        if search_result is None:
             # add new record to db
-            db = self.settings["db"]
             _id = yield db.users.insert(user)
 
             # return created json
