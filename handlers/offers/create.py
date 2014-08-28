@@ -34,6 +34,7 @@ class CreateOfferHandler(RequestHandler):
     def get(self):
         search = self.get_query_argument("q", default=None)
         offers = list()
+        ret = dict()
         db = self.settings["db"]
 
         if search is None:
@@ -46,6 +47,7 @@ class CreateOfferHandler(RequestHandler):
         else:
             # do search
             search_terms = search.split(",")
+            ret["search_terms"] = search_terms
             cursor = db.offers.find({
                 "keywords.keyword": {
                     "$in": search_terms
@@ -57,6 +59,7 @@ class CreateOfferHandler(RequestHandler):
                 offers.append(offer)
 
         # return offers
+        ret["result"] = offers
         self.set_status(200)
-        self.write({"result": offers})
+        self.write(ret)
         self.finish()
