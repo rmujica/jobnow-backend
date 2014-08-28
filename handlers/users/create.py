@@ -5,7 +5,7 @@ class CreateUserHandler(RequestHandler):
     @gen.coroutine
     def post(self):
         user = dict()
-        user["type"] = self.get_argument("type")
+        user["type"]     = self.get_argument("type") # u == user, b == business
         user["email"]    = self.get_argument("email")
         user["password"] = self.get_argument("password")
         if user["type"] == "u":
