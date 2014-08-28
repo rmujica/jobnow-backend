@@ -130,7 +130,7 @@ class Rake(object):
         keyword_candidates = generate_candidate_keyword_scores(phrase_list, word_scores)
 
         keywords = [{"keyword":k, "score":v} for k, v in keyword_candidates.items()]
-        return keywords
+        return sorted(keywords, key=operator.itemgetter(1), reverse=True)
 
         #sorted_keywords = sorted(keyword_candidates.items(), key=operator.itemgetter(1), reverse=True)
         #return {t[0]:t[1] for t in sorted_keywords}
