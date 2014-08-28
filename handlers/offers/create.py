@@ -32,16 +32,29 @@ class CreateOfferHandler(RequestHandler):
 
     @gen.coroutine
     def get(self):
+        search = self.get_query_argument("q", default=None)
         offers = list()
-
-        # get all offers
         db = self.settings["db"]
-        cursor = db.offers.find()
-        i = 0
-        while (yield cursor.fetch_next):
-            offer = cursor.next_object()
-            offer["_id"] = str(offer["_id"])
-            offers.append(offer)
+
+        if search is None:
+            # get all offers
+            cursor = db.offers.find()
+            while (yield cursor.fetch_next):
+                offer = cursor.next_object()
+                offer["_id"] = str(offer["_id"])
+                offers.append(offer)
+        else:
+            # do search
+            search_terms = search.split(",")
+            cursor = db.offers.find({
+                "keywords.keyword": {
+                    "$in": search_terms
+                    }
+                })
+            while (yield cursor.fetch_next):
+                offer = cursor.next_object()
+                offer["_id"] = str(offer["_id"])
+                offers.append(offer)
 
         # return offers
         self.set_status(200)
