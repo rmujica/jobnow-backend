@@ -21,6 +21,9 @@ class CreateUserHandler(RequestHandler):
             "email": user["email"],
         }
 
+        print user["email"]
+        print user["password"]
+
         # search if user exists
         db = self.settings["db"]
         search_result = yield db.users.find_one(search)
