@@ -21,8 +21,8 @@ class CreateUserHandler(RequestHandler):
             "email": user["email"],
         }
 
-        print user["email"]
-        print user["password"]
+        print(user["email"])
+        print(user["password"])
 
         # search if user exists
         db = self.settings["db"]
