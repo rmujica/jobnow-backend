@@ -17,6 +17,7 @@ routes = [
     url(r"/users/login", LoginUserHandler),
     url(r"/users/(\w+)", ReadUserHandler),
     url(r"/offers", CreateOfferHandler),
+    url(r"/offers/(\w+)/applications", ApplyOfferHandler),
 ]
 
 # mongo init
