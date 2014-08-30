@@ -17,6 +17,11 @@ class ApplyOfferHandler(RequestHandler):
             self.send_error(400)
             return
 
+        offer = yield db.offers.find_one({"_id": oid})
+        if offer is None:
+            self.send_error(404)
+            return
+            
         # add application
         result = yield db.offers.update({
             "_id": oid
