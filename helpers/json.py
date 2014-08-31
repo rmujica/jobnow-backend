@@ -6,6 +6,6 @@ def jsonhandler(obj):
     elif hasattr(obj, 'isoformat'):
         return obj.isoformat()
     elif isinstance(obj, ObjectId):
-        return str(ObjectId)
+        return str(obj)
     else:
         raise TypeError
