@@ -4,7 +4,7 @@ from tornado.web import RequestHandler
 from tornado import gen
 from bson.objectid import ObjectId
 
-from helpers.json as jsonhandler
+import helpers.json as jsonhandler
 
 class ApplyOfferHandler(RequestHandler):
     @gen.coroutine
