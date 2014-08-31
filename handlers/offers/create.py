@@ -1,7 +1,10 @@
+import json
+
 from tornado.web import RequestHandler
 from tornado import gen
 
 from keywords.rake import Rake
+import helpers.json as jsonhelper
 
 class CreateOfferHandler(RequestHandler):
     @gen.coroutine
@@ -42,7 +45,6 @@ class CreateOfferHandler(RequestHandler):
             cursor = db.offers.find()
             while (yield cursor.fetch_next):
                 offer = cursor.next_object()
-                offer["_id"] = str(offer["_id"])
                 offers.append(offer)
         else:
             # do search
@@ -55,11 +57,10 @@ class CreateOfferHandler(RequestHandler):
                 })
             while (yield cursor.fetch_next):
                 offer = cursor.next_object()
-                offer["_id"] = str(offer["_id"])
                 offers.append(offer)
 
         # return offers
         ret["result"] = offers
         self.set_status(200)
-        self.write(ret)
+        self.write(json.dumps(ret, default=jsonhandler.jsonhandler))
         self.finish()
