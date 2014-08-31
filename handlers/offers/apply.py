@@ -1,6 +1,10 @@
+import json
+
 from tornado.web import RequestHandler
 from tornado import gen
 from bson.objectid import ObjectId
+
+from handlers.json as jsonhandler
 
 class ApplyOfferHandler(RequestHandler):
     @gen.coroutine
@@ -37,5 +41,5 @@ class ApplyOfferHandler(RequestHandler):
         updated_offer["_id"] = str(updated_offer["_id"])
 
         self.set_status(201)
-        self.write(updated_offer)
+        self.write(json.dumps(updated_offer, default=jsonhandler.jsonhandler))
         self.finish()
