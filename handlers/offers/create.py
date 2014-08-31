@@ -4,7 +4,7 @@ from tornado.web import RequestHandler
 from tornado import gen
 
 from keywords.rake import Rake
-import helpers.json as jsonhelper
+import helpers.json as jsonhandler
 
 class CreateOfferHandler(RequestHandler):
     @gen.coroutine
