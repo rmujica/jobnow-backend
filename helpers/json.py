@@ -8,4 +8,4 @@ def jsonhandler(obj):
     elif isinstance(obj, ObjectId):
         return str(ObjectId)
     else:
-        raise TypeError, 'Object of type %s with value of %s is not JSON serializable' % (type(obj), repr(obj))
+        raise TypeError
