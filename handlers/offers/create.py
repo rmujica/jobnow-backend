@@ -1,4 +1,5 @@
 import json
+import re
 
 from tornado.web import RequestHandler
 from tornado import gen
@@ -48,7 +49,7 @@ class CreateOfferHandler(RequestHandler):
                 offers.append(offer)
         else:
             # do search
-            search_terms = ["/.*"+term.strip()+".*/" for term in search.split(",")]
+            search_terms = [re.compile(re.escape("/"+term.strip()+"/")) for term in search.split(",")]
             ret["search_terms"] = search_terms
             cursor = db.offers.find({
                 "keywords.keyword": {
