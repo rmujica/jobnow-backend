@@ -50,7 +50,7 @@ class CreateOfferHandler(RequestHandler):
         else:
             # do search
             search_terms = [re.compile(re.escape("/"+term.strip()+"/")) for term in search.split(",")]
-            ret["search_terms"] = search_terms
+            ret["search_terms"] = [term.strip() for term in search.split(",")]
             cursor = db.offers.find({
                 "keywords.keyword": {
                     "$in": search_terms
