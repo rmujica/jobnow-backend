@@ -72,5 +72,6 @@ class CreateOfferHandler(RequestHandler):
     def options(self):
         self.set_status(200)
         # necesario para desarrollo en localhost
+        self.set_header('Access-Control-Allow-Headers', '*')
         self.set_header('Access-Control-Allow-Origin', '*')
         self.finish()
