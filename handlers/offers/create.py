@@ -62,6 +62,7 @@ class CreateOfferHandler(RequestHandler):
 
         # return offers
         ret["result"] = offers
+        self.set_header("Access-Control-Allow-Origin", "*")
         self.set_status(200)
         self.write(json.dumps(ret, default=jsonhandler.jsonhandler))
         self.finish()
