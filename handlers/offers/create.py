@@ -68,3 +68,9 @@ class CreateOfferHandler(RequestHandler):
         self.set_header('Access-Control-Allow-Origin', '*')
         self.write(json.dumps(ret, default=jsonhandler.jsonhandler))
         self.finish()
+
+    def options(self):
+        self.set_status(200)
+        # necesario para desarrollo en localhost
+        self.set_header('Access-Control-Allow-Origin', '*')
+        self.finish()
