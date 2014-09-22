@@ -54,17 +54,18 @@ class OfferHandler(RequestHandler):
         offers = list()
         ret    = dict()
         db     = self.settings["db"]
+        ret["search_terms"] = list()
 
-        if search is None:
+        if search is None and uid is None:
             # get all offers
-            ret["search_terms"] = list()
             cursor = db.offers.find()
+
             while (yield cursor.fetch_next):
                 offer = cursor.next_object()
                 offers.append(offer)
         elif search is not None:
             # create search terms
-            ret["search_terms"] = [term.strip() for term in search.split(",")]
+            ret["search_terms"].extend([term.strip() for term in search.split(",")])
             search_terms = [re.compile(".*"+term.strip()+".*") for term in search.split(",")]
 
             # do search
@@ -86,7 +87,7 @@ class OfferHandler(RequestHandler):
                 return
             
             # create search term
-            ret["search_terms"] = [user_id]
+            ret["search_terms"].extend([user_id])
 
             # do search
             cursor = db.offers.find({

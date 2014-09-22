@@ -19,11 +19,12 @@ class SearchOfferHandler(RequestHandler):
 
         if search is None and uid is None:
             # get all offers
+            ret["search_terms"] = list()
             cursor = db.offers.find()
+            
             while (yield cursor.fetch_next):
                 offer = cursor.next_object()
                 offers.append(offer)
-            ret["search_terms"] = list()
         elif search is not None:
             # do search
             search_terms = [re.compile(".*"+term.strip()+".*") for term in search.split(",")]
