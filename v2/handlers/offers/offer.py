@@ -64,28 +64,30 @@ class OfferHandler(RequestHandler):
             while (yield cursor.fetch_next):
                 offer = cursor.next_object()
                 offers.append(offer)
-        elif search is not None:
-            # create search terms
-            ret["search_terms"].extend([term.strip() for term in search.split(",")])
-            search_terms = [re.compile(".*"+term.strip()+".*") for term in search.split(",")]
+        else:
+            if search is not None:
+                # create search terms
+                ret["search_terms"].extend([term.strip() for term in search.split(",")])
+                search_terms = [re.compile(".*"+term.strip()+".*") for term in search.split(",")]
 
-            # do search
-            cursor = db.offers.find({
-                "keywords.keyword": {
-                    "$in": search_terms
-                }
-            })
+                # do search
+                cursor = db.offers.find({
+                    "keywords.keyword": {
+                        "$in": search_terms
+                    }
+                })
 
-            while (yield cursor.fetch_next):
-                offer = cursor.next_object()
-                offers.append(offer)
-        elif uid is not None:
-            # is valid user id?
-            try:
-                user_id = ObjectId(uid)
-            except InvalidId:
-                self.send_error(400)
-                return
+                while (yield cursor.fetch_next):
+                    offer = cursor.next_object()
+                    offers.append(offer)
+                    
+            if uid is not None:
+                # is valid user id?
+                try:
+                    user_id = ObjectId(uid)
+                except InvalidId:
+                    self.send_error(400)
+                    return
             
             # create search term
             ret["search_terms"].extend([user_id])
