@@ -44,7 +44,7 @@ class SearchOfferHandler(RequestHandler):
                 return
             cursor = db.offers.find({
                 "candidates": {
-                    "$in": user_id
+                    "$elemMatch": user_id
                     }
                 })
             while (yield cursor.fetch_next):
