@@ -30,7 +30,7 @@ class ApplyOfferHandler(RequestHandler):
 
         # check if user exists
         user = yield db.users.find_one({"_id": user_id})
-        if user is None:
+        if user is None or user["type"] == "b":
             self.send_error(412)
 
         # add candidate to offer
