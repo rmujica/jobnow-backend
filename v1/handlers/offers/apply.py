@@ -6,7 +6,7 @@ from bson.objectid import ObjectId
 
 import helpers.json as jsonhandler
 
-class OfferHandler(RequestHandler):
+class ApplyOfferHandler(RequestHandler):
     @gen.coroutine
     def post(self, oid):
         uid = self.get_argument("user_id")
