@@ -43,10 +43,8 @@ class SearchOfferHandler(RequestHandler):
                 self.send_error(400)
                 return
             cursor = db.offers.find({
-                "candidates": {
-                    "$elemMatch": {user_id}
-                    }
-                })
+                "candidates": user_id
+            })
             while (yield cursor.fetch_next):
                 offer = cursor.next_object()
                 offers.append(offer)
