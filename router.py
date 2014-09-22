@@ -30,7 +30,7 @@ routes = [
     url(r"/users/login", v1.handlers.users.login.LoginUserHandler),
     url(r"/users/(\w+)", v1.handlers.users.search.SearchUserHandler),
     url(r"/offers", v1.handlers.offers.offer.OfferHandler),
-    url(r"/offers/(\w+))", v1.handlers.offers.search.SearchOfferHandler),
+    url(r"/offers/(\w+)", v1.handlers.offers.search.SearchOfferHandler),
     url(r"/offers/(\w+)/applications", v1.handlers.offers.apply.ApplyOfferHandler),
 
     # v2
@@ -39,7 +39,7 @@ routes = [
     url(r"v2/users/login", v2.handlers.users.login.LoginUserHandler),
     url(r"v2/users/(\w+)", v2.handlers.users.search.SearchUserHandler),
     url(r"v2/offers", v2.handlers.offers.offer.OfferHandler),
-    url(r"v2/offers/(\w+))", v2.handlers.offers.search.SearchOfferHandler),
+    url(r"v2/offers/(\w+)", v2.handlers.offers.search.SearchOfferHandler),
     url(r"v2/offers/(\w+)/applications", v2.handlers.offers.apply.ApplyOfferHandler),
 ]
 
