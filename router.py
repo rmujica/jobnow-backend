@@ -5,19 +5,21 @@ from tornado.web import Application, url
 import motor
 
 from handlers.index.index import IndexHandler
-from handlers.users.create import CreateUserHandler
-from handlers.users.read import ReadUserHandler
+from handlers.users.offer import UserHandler
+from handlers.users.search import SearchUserHandler
 from handlers.users.login import LoginUserHandler
-from handlers.offers.create import CreateOfferHandler
+from handlers.offers.offer import OfferHandler
 from handlers.offers.apply import ApplyOfferHandler
+from handlers.offers.search import SearchOfferHandler
 
 # system routes
 routes = [
     url(r"/", IndexHandler),
-    url(r"/users", CreateUserHandler),
+    url(r"/users", UserHandler),
     url(r"/users/login", LoginUserHandler),
-    url(r"/users/(\w+)", ReadUserHandler),
-    url(r"/offers", CreateOfferHandler),
+    url(r"/users/(\w+)", SearchUserHandler),
+    url(r"/offers", OfferHandler),
+    url(r"/offers/(\w+))", SearchOfferHandler),
     url(r"/offers/(\w+)/applications", ApplyOfferHandler),
 ]
 

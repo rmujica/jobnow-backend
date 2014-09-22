@@ -3,7 +3,7 @@ from tornado import gen
 from bson.objectid import ObjectId
 from bson.errors import InvalidId
 
-class ReadUserHandler(RequestHandler):
+class SearchUserHandler(RequestHandler):
     @gen.coroutine
     def get(self, uid):
         # query collection using uid

@@ -1,7 +1,7 @@
 from tornado.web import RequestHandler
 from tornado import gen
 
-class CreateUserHandler(RequestHandler):
+class UserHandler(RequestHandler):
     @gen.coroutine
     def post(self):
         user = dict()
