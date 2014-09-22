@@ -50,17 +50,19 @@ class OfferHandler(RequestHandler):
     @gen.coroutine
     def get(self):
         search = self.get_query_argument("q", default=None)
+        uid = self.get_query_argument("u", default=None)
         offers = list()
         ret    = dict()
         db     = self.settings["db"]
 
         if search is None:
             # get all offers
+            ret["search_terms"] = list()
             cursor = db.offers.find()
             while (yield cursor.fetch_next):
                 offer = cursor.next_object()
                 offers.append(offer)
-        else:
+        elif search is not None:
             # create search terms
             ret["search_terms"] = [term.strip() for term in search.split(",")]
             search_terms = [re.compile(".*"+term.strip()+".*") for term in search.split(",")]
@@ -70,6 +72,25 @@ class OfferHandler(RequestHandler):
                 "keywords.keyword": {
                     "$in": search_terms
                 }
+            })
+
+            while (yield cursor.fetch_next):
+                offer = cursor.next_object()
+                offers.append(offer)
+        elif uid is not None:
+            # is valid user id?
+            try:
+                user_id = ObjectId(uid)
+            except InvalidId:
+                self.send_error(400)
+                return
+            
+            # create search term
+            ret["search_terms"] = [user_id]
+
+            # do search
+            cursor = db.offers.find({
+                "candidates": user_id
             })
 
             while (yield cursor.fetch_next):
