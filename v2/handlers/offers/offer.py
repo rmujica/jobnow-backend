@@ -1,5 +1,6 @@
 import json
 import re
+import datetime
 
 from tornado.web import RequestHandler
 from tornado import gen
@@ -20,8 +21,8 @@ class OfferHandler(RequestHandler):
         offer["price_type"]        = self.get_argument("price_type")
         offer["category"]          = self.get_argument("category")
         offer["candidates"]        = list()
-        #offer["start_date"]        = # PARSE DATE datetime.strptime
-        #offer["end_date"]
+        offer["start_date"]        = datetime.datetime.strptime(self.get_argument("start_date"), "%d/%m/%Y")
+        offer["end_date"]          = datetime.datetime.strptime(self.get_argument("end_date"), "%d/%m/%Y")
 
         # is valid user id?
         try:
