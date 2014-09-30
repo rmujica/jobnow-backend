@@ -23,6 +23,8 @@ class OfferHandler(RequestHandler):
         offer["candidates"]        = list()
         offer["start_date"]        = datetime.datetime.strptime(self.get_argument("start_date"), "%d/%m/%Y")
         offer["end_date"]          = datetime.datetime.strptime(self.get_argument("end_date"), "%d/%m/%Y")
+        offer["lat"]               = self.get_argument("lat")
+        offer["lng"]               = self.get_argument("lng")
 
         # is valid user id?
         try:
