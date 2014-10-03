@@ -102,6 +102,25 @@ class SearchOfferHandler(RequestHandler):
         self.write(json.dumps(ret, default=jsonhandler.jsonhandler))
         self.finish()
 
+    @gen.coroutine
+    def delete(self, offer_id):
+        # verify offer id
+        try:
+            offer_id = ObjectId(offer_id)
+        except InvalidId:
+            self.send_error(400)
+            return
+
+        # do delete
+        result = yield db.offers.delete({"_id": offer_id})
+
+        # return offers
+        ret["result"] = {}
+        self.set_status(200)
+        self.set_header('Content-Type', 'application/json')
+        self.write(json.dumps(ret, default=jsonhandler.jsonhandler))
+        self.finish()
+
     def options(self):
         self.set_status(200)
         # necesario para desarrollo en localhost
