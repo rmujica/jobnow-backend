@@ -93,7 +93,7 @@ class SearchOfferHandler(RequestHandler):
                     updated_offer[k] = offer[k]
 
         # do update
-        result = yield db.offers.update({"_id": offer_id}, updated_offer)
+        result = yield db.offers.update({"_id": offer_id}, {"$set": updated_offer})
 
         # return offers
         ret["result"] = yield db.offers.find_one({"_id": offer_id})
