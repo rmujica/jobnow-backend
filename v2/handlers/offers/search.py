@@ -69,8 +69,8 @@ class SearchOfferHandler(RequestHandler):
         offer["price"]             = self.get_argument("price", default=None)
         offer["price_type"]        = self.get_argument("price_type", default=None)
         offer["category"]          = self.get_argument("category", default=None)
-        offer["start_date"]        = datetime.datetime.strptime(self.get_argument("start_date", default=None), "%d/%m/%Y")
-        offer["end_date"]          = datetime.datetime.strptime(self.get_argument("end_date", default=None), "%d/%m/%Y")
+        offer["start_date"]        = self.get_argument("start_date", default=None)
+        offer["end_date"]          = self.get_argument("end_date", default=None)
         offer["lat"]               = self.get_argument("lat", default=None)
         offer["lng"]               = self.get_argument("lng", default=None)
 
@@ -87,6 +87,8 @@ class SearchOfferHandler(RequestHandler):
         for k, v in offer.items():
             if v is None:
                 del offer[k]
+            elif k == "start_date" or k == "end_date":
+                offer[k] = datetime.datetime.strptime(offer[k], "%d/%m/%Y")
 
         # do update
         offer["_id"] = offer_id
