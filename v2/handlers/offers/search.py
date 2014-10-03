@@ -96,7 +96,7 @@ class SearchOfferHandler(RequestHandler):
         result = yield db.offers.update({"_id": offer_id}, updated_offer)
 
         # return offers
-        ret["result"] = result
+        ret["result"] = yield db.offers.find_one({"_id": offer_id})
         self.set_status(200)
         self.set_header('Content-Type', 'application/json')
         self.write(json.dumps(ret, default=jsonhandler.jsonhandler))
