@@ -42,6 +42,15 @@ class OfferHandler(RequestHandler):
         db = self.settings["db"]
         _id = yield db.offers.insert(offer)
 
+        # add offer to user
+        new_offer_result = yield db.users.update({
+            "_id": offer["user_id"]
+        }, {
+            "$push": {
+                "offers": _id
+            }
+        })
+
         # get created object
         offer = yield db.offers.find_one({"_id": _id})
 
