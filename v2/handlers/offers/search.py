@@ -84,11 +84,13 @@ class SearchOfferHandler(RequestHandler):
             return
 
         # what fields we update?
+        updated_offer = dict()
         for k, v in offer.items():
-            if v is None:
-                del offer[k]
-            elif k == "start_date" or k == "end_date":
-                offer[k] = datetime.datetime.strptime(offer[k], "%d/%m/%Y")
+            if v is not None:
+                if k == "start_date" or k == "end_date":
+                    updated_offer[k] = datetime.datetime.strptime(offer[k], "%d/%m/%Y")
+                else:
+                    updated_offer[k] = offer[k]
 
         # do update
         offer["_id"] = offer_id
