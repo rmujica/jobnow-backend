@@ -59,6 +59,45 @@ class SearchOfferHandler(RequestHandler):
         self.write(json.dumps(ret, default=jsonhandler.jsonhandler))
         self.finish()
 
+    @gen.coroutine
+    def put(self, offer_id):
+        ret = dict()
+        offer = dict()
+        offer["short_description"] = self.get_argument("short_description", default=None)
+        offer["long_description"]  = self.get_argument("long_description", default=None) 
+        offer["price"]             = self.get_argument("price", default=None)
+        offer["price_type"]        = self.get_argument("price_type", default=None)
+        offer["category"]          = self.get_argument("category", default=None)
+        offer["start_date"]        = datetime.datetime.strptime(self.get_argument("start_date"), "%d/%m/%Y", default=None)
+        offer["end_date"]          = datetime.datetime.strptime(self.get_argument("end_date"), "%d/%m/%Y", default=None)
+        offer["lat"]               = self.get_argument("lat", default=None)
+        offer["lng"]               = self.get_argument("lng", default=None)
+
+        db = self.settings["db"]
+
+        # verify offer id
+        try:
+            offer_id = ObjectId(offer_id)
+        except InvalidId:
+            self.send_error(400)
+            return
+
+        # what fields we update?
+        for k, v in offer.items():
+            if v is None:
+                del offer[k]
+
+        # do update
+        offer["_id"] = offer_id
+        result = yield db.offers.update(offer)
+
+        # return offers
+        ret["result"] = offer
+        self.set_status(200)
+        self.set_header('Content-Type', 'application/json')
+        self.write(json.dumps(ret, default=jsonhandler.jsonhandler))
+        self.finish()
+
     def options(self):
         self.set_status(200)
         # necesario para desarrollo en localhost
