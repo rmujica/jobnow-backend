@@ -69,8 +69,8 @@ class SearchOfferHandler(RequestHandler):
         offer["price"]             = self.get_argument("price", default=None)
         offer["price_type"]        = self.get_argument("price_type", default=None)
         offer["category"]          = self.get_argument("category", default=None)
-        offer["start_date"]        = datetime.datetime.strptime(self.get_argument("start_date"), "%d/%m/%Y", default=None)
-        offer["end_date"]          = datetime.datetime.strptime(self.get_argument("end_date"), "%d/%m/%Y", default=None)
+        offer["start_date"]        = datetime.datetime.strptime(self.get_argument("start_date", default=None), "%d/%m/%Y")
+        offer["end_date"]          = datetime.datetime.strptime(self.get_argument("end_date", default=None), "%d/%m/%Y")
         offer["lat"]               = self.get_argument("lat", default=None)
         offer["lng"]               = self.get_argument("lng", default=None)
 
