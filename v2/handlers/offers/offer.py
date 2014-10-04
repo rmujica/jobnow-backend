@@ -101,17 +101,16 @@ class OfferHandler(RequestHandler):
                     self.send_error(400)
                     return
             
-            # create search term
-            newlist = [user_id]
-            ret["search_terms"].extend(newlist)
+                # create search term
+                ret["search_terms"].extend(user_id)
 
-            # do search
-            cursor = db.offers.find({
-                "candidates": user_id
-            })
+                # do search
+                cursor = db.offers.find({
+                    "candidates": user_id
+                })
 
-            while (yield cursor.fetch_next):
-                offer = cursor.next_object()
+                while (yield cursor.fetch_next):
+                    offer = cursor.next_object()
                 offers.append(offer)
 
         # return offers
