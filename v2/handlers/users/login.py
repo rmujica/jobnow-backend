@@ -22,5 +22,5 @@ class LoginUserHandler(RequestHandler):
         else:
             self.set_status(200)
             self.set_header('Content-Type', 'application/json')
-            self.write(dumps(user)
+            self.write(dumps(user))
             self.finish()
