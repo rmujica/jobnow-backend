@@ -1,8 +1,11 @@
+import json
+
 from tornado.web import RequestHandler
 from tornado import gen
 from bson.objectid import ObjectId
 from bson.errors import InvalidId
-from bson.json_util import dumps
+
+import helpers.json as jsonhandler
 
 class LoginUserHandler(RequestHandler):
     @gen.coroutine
@@ -17,10 +20,10 @@ class LoginUserHandler(RequestHandler):
         user = yield db.users.find_one(search)
 
         # user exists?
-        if user is None:
-            self.send_error(404)
-        else:
-            self.set_status(200)
-            self.set_header('Content-Type', 'application/json')
-            self.write(dumps(user))
-            self.finish()
+        #if user is None:
+        #    self.send_error(404)
+        #else:
+        self.set_status(200)
+        self.set_header('Content-Type', 'application/json')
+        self.write(json.dumps(user, default=jsonhandler.jsonhandler))
+        self.finish()
