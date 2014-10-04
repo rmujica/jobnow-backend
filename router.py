@@ -22,15 +22,6 @@ import v2.handlers.offers.offer
 import v2.handlers.offers.apply
 import v2.handlers.offers.search
 
-# v3
-import v3.handlers.index.index
-import v3.handlers.users.user
-import v3.handlers.users.search
-import v3.handlers.users.login
-import v3.handlers.offers.offer
-import v3.handlers.offers.apply
-import v3.handlers.offers.search
-
 # system routes
 routes = [
     # v1
@@ -50,15 +41,6 @@ routes = [
     url(r"/v2/offers", v2.handlers.offers.offer.OfferHandler),
     url(r"/v2/offers/(\w+)", v2.handlers.offers.search.SearchOfferHandler),
     url(r"/v2/offers/(\w+)/applications", v2.handlers.offers.apply.ApplyOfferHandler),
-
-    # v3
-    url(r"/v3/", v3.handlers.index.index.IndexHandler),
-    url(r"/v3/users", v3.handlers.users.user.UserHandler),
-    url(r"/v3/users/login", v3.handlers.users.login.LoginUserHandler),
-    url(r"/v3/users/(\w+)", v3.handlers.users.search.SearchUserHandler),
-    url(r"/v3/offers", v3.handlers.offers.offer.OfferHandler),
-    url(r"/v3/offers/(\w+)", v3.handlers.offers.search.SearchOfferHandler),
-    url(r"/v3/offers/(\w+)/applications", v3.handlers.offers.apply.ApplyOfferHandler),
 ]
 
 # mongo init

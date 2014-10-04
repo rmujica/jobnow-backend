@@ -102,7 +102,8 @@ class OfferHandler(RequestHandler):
                     return
             
             # create search term
-            ret["search_terms"].extend([user_id])
+            newlist = [user_id]
+            ret["search_terms"].extend(newlist)
 
             # do search
             cursor = db.offers.find({
