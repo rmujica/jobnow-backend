@@ -2,7 +2,7 @@ from tornado.web import RequestHandler
 from tornado import gen
 from bson.objectid import ObjectId
 from bson.errors import InvalidId
-from bson.json_utils import dumps
+from bson.json_util import dumps
 
 class LoginUserHandler(RequestHandler):
     @gen.coroutine
