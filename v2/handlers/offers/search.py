@@ -5,6 +5,7 @@ import datetime
 from tornado.web import RequestHandler
 from tornado import gen
 from bson.objectid import ObjectId
+from bson.errors import InvalidId
 
 from keywords.rake import Rake
 import helpers.json as jsonhandler

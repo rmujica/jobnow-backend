@@ -1,11 +1,8 @@
-import json
-
 from tornado.web import RequestHandler
 from tornado import gen
 from bson.objectid import ObjectId
 from bson.errors import InvalidId
-
-import helpers.json as jsonhandler
+from bson.json_utils import dumps
 
 class LoginUserHandler(RequestHandler):
     @gen.coroutine
@@ -25,5 +22,5 @@ class LoginUserHandler(RequestHandler):
         else:
             self.set_status(200)
             self.set_header('Content-Type', 'application/json')
-            self.write(json.dumps(user, default=jsonhandler.jsonhandler))
+            self.write(dumps(user)
             self.finish()
