@@ -84,7 +84,7 @@ class SearchOfferHandler(RequestHandler):
             return
 
         # do delete
-        result = yield db.offers.delete({"_id": offer_id})
+        result = yield db.offers.remove({"_id": offer_id})
 
         # return offers
         ret["result"] = {}
