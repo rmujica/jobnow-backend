@@ -74,6 +74,8 @@ class SearchOfferHandler(RequestHandler):
 
     @gen.coroutine
     def delete(self, offer_id):
+        db = self.settings["db"]
+
         # verify offer id
         try:
             offer_id = ObjectId(offer_id)
