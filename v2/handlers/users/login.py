@@ -20,10 +20,10 @@ class LoginUserHandler(RequestHandler):
         user = yield db.users.find_one(search)
 
         # user exists?
-        #if user is None:
-        #    self.send_error(404)
-        #else:
-        self.set_status(200)
-        self.set_header('Content-Type', 'application/json')
-        self.write(json.dumps(user, default=jsonhandler.jsonhandler))
-        self.finish()
+        if user is None:
+            self.send_error(404)
+        else:
+            self.set_status(200)
+            self.set_header('Content-Type', 'application/json')
+            self.write(json.dumps(user, default=jsonhandler.jsonhandler))
+            self.finish()
