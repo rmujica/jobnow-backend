@@ -60,3 +60,36 @@ class ApplyOfferHandler(RequestHandler):
         self.set_header('Content-Type', 'application/json')
         self.write(json.dumps(updated_offer, default=jsonhandler.jsonhandler))
         self.finish()
+
+
+    @gen.coroutine
+    def get(self, oid):
+        # query collection using uid
+        db = self.settings["db"]
+        users = list()
+        ret = dict()
+        
+        # is valid uid?
+        try:
+            offer_id = ObjectId(oid)
+        except InvalidId:
+            self.send_error(400)
+            return
+
+        # do search
+        cursor = db.users.find({
+            "applications": {
+                "$in": [offer_id]
+            }
+        })
+
+        while (yield cursor.fetch_next):
+            user = cursor.next_object()
+            users.append(user)
+
+        # return
+        ret["result"] = users
+        self.set_status(200)
+        self.set_header('Content-Type', 'application/json')
+        self.write(json.dumps(ret, default=jsonhandler.jsonhandler))
+        self.finish()
