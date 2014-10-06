@@ -33,6 +33,12 @@ class ApplyOfferHandler(RequestHandler):
         user = yield db.users.find_one({"_id": user_id})
         if user is None or user["type"] == "b":
             self.send_error(412)
+            return
+
+        # check if user has application
+        if offer_id in user["applications"]:
+            self.send_error(413)
+            return
 
         # add candidate to offer
         candidate_result = yield db.offers.update({
