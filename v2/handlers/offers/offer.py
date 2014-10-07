@@ -64,12 +64,38 @@ class OfferHandler(RequestHandler):
     def get(self):
         search = self.get_query_argument("q", default=None)
         uid = self.get_query_argument("u", default=None)
+        most = self.get_query_argumen("n", default=None)
         offers = list()
         ret    = dict()
         db     = self.settings["db"]
         ret["search_terms"] = list()
 
-        if search is None and uid is None:
+        if n is not None:
+            n = int(n)
+            offer_ids = list()
+
+            cursor = db.offers.aggregate(
+                {"$unwind": "$candidates"},
+                {"$group": {_id: "$_id", count: {"$sum": 1}}},
+                {"$sort": {count: -1}},
+                {"$limit": n}
+            )
+
+            while (yield cursor.fetch_next):
+                offer_id = cursor.next_object()
+                offers_ids.append(offer_id["_id"])
+
+            cursor = db.offers.find({
+                "_id": {
+                    "$in": offers_id
+                }
+            })
+
+            while (yield cursor.fetch_next):
+                offer = cursor.next_object()
+                offers.append(offer)
+                
+        elif search is None and uid is None:
             # get all offers
             cursor = db.offers.find()
 
