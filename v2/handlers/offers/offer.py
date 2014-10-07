@@ -81,13 +81,12 @@ class OfferHandler(RequestHandler):
                 {"$limit": n}
             ])
 
-            while (yield cursor.fetch_next):
-                offer_id = cursor.next_object()
-                offers_ids.append(offer_id["_id"])
+            for result in cursor["result"]:
+                offer_ids.append(result["_id"])
 
             cursor = db.offers.find({
                 "_id": {
-                    "$in": offers_id
+                    "$in": offer_ids
                 }
             })
 
