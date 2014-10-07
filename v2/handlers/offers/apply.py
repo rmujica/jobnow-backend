@@ -99,3 +99,128 @@ class ApplyOfferHandler(RequestHandler):
         self.set_header('Content-Type', 'application/json')
         self.write(json.dumps(ret, default=jsonhandler.jsonhandler))
         self.finish()
+
+class ReviewOfferHandler(RequestHandler):
+    @gen.coroutine
+    def put(self, oid, uid):
+        db = self.settings["db"]
+        # verify oid and uid
+        try:
+            oid = ObjectId(oid)
+            uid = ObjectId(uid)
+        except InvalidId:
+            self.send_error(400)
+            return
+
+        # check if offer exists
+        offer = yield db.offers.find_one({"_id": oid})
+        if offer is None:
+            self.send_error(404)
+            return
+
+        # check if user exists
+        user = yield db.users.find_one({"_id": uid})
+        if user is None or user["type"] == "b":
+            self.send_error(412)
+            return
+
+        # check if user has application
+        if oid not in user["applications"]:
+            self.send_error(413)
+            return
+
+        # check if user has been accepted or rejected yet
+        try:
+            if uid in offer["accepted"] or uid in offer["rejected"]:
+                self.send_error(414)
+                return
+        except KeyError:
+            pass
+
+        # add offer to application
+        application_result = yield db.offers.update({
+            "_id": oid
+        }, {"$push": {
+                "accepted": uid
+            },
+            "$pull": {
+                "candidates": uid
+            }
+        })
+
+        # add status to user
+        user_result = yield db.users.update({
+            "_id": uid
+        }, {"$push": {"accepted": oid},
+            "$pull": {"applications": oid}})
+
+        # get updated offer
+        updated_offer = yield db.offers.find_one({"_id": oid})
+
+        # return updated offer
+        self.set_status(201)
+        self.set_header('Content-Type', 'application/json')
+        self.write(json.dumps(updated_offer, default=jsonhandler.jsonhandler))
+        self.finish()
+
+    @gen.coroutine
+    def delete(self, oid, uid):
+        db = self.settings["db"]
+        # verify oid and uid
+        try:
+            oid = ObjectId(oid)
+            uid = ObjectId(uid)
+        except InvalidId:
+            self.send_error(400)
+            return
+
+        # check if offer exists
+        offer = yield db.offers.find_one({"_id": oid})
+        if offer is None:
+            self.send_error(404)
+            return
+
+        # check if user exists
+        user = yield db.users.find_one({"_id": uid})
+        if user is None or user["type"] == "b":
+            self.send_error(412)
+            return
+
+        # check if user has application
+        if oid not in user["applications"]:
+            self.send_error(413)
+            return
+
+        # check if user has been accepted or rejected yet
+        try:
+            if uid in offer["accepted"] or uid in offer["rejected"]:
+                self.send_error(414)
+                return
+        except KeyError:
+            pass
+
+        # add offer to application
+        application_result = yield db.offers.update({
+            "_id": oid
+        }, {"$push": {
+                "rejected": uid
+            },
+            "$pull": {
+                "candidates": uid
+            }
+        })
+
+        # add status to user
+        user_result = yield db.users.update({
+            "_id": uid
+        }, {"$push": {"rejected": oid},
+            "$pull": {"applications": oid}})
+
+        # get updated offer
+        updated_offer = yield db.offers.find_one({"_id": oid})
+
+        # return updated offer
+        self.set_status(201)
+        self.set_header('Content-Type', 'application/json')
+        self.write(json.dumps(updated_offer, default=jsonhandler.jsonhandler))
+        self.finish()

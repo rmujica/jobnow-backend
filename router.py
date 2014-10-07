@@ -41,6 +41,7 @@ routes = [
     url(r"/v2/offers", v2.handlers.offers.offer.OfferHandler),
     url(r"/v2/offers/(\w+)", v2.handlers.offers.search.SearchOfferHandler),
     url(r"/v2/offers/(\w+)/applications", v2.handlers.offers.apply.ApplyOfferHandler),
+    url(r"/v2/offers/(\w+)/applications/(\w+)", v2.handlers.offers.apply.ReviewOfferHandler),
 ]
 
 # mongo init
