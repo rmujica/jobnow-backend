@@ -64,7 +64,7 @@ class OfferHandler(RequestHandler):
     def get(self):
         search = self.get_query_argument("q", default=None)
         uid = self.get_query_argument("u", default=None)
-        most = self.get_query_argumen("n", default=None)
+        most = self.get_query_argument("n", default=None)
         offers = list()
         ret    = dict()
         db     = self.settings["db"]
@@ -94,7 +94,7 @@ class OfferHandler(RequestHandler):
             while (yield cursor.fetch_next):
                 offer = cursor.next_object()
                 offers.append(offer)
-                
+
         elif search is None and uid is None:
             # get all offers
             cursor = db.offers.find()
