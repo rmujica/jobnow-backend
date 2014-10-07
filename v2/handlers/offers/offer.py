@@ -64,7 +64,7 @@ class OfferHandler(RequestHandler):
     def get(self):
         search = self.get_query_argument("q", default=None)
         uid = self.get_query_argument("u", default=None)
-        most = self.get_query_argument("n", default=None)
+        n = self.get_query_argument("n", default=None)
         offers = list()
         ret    = dict()
         db     = self.settings["db"]
