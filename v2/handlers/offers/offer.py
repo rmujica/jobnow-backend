@@ -74,7 +74,7 @@ class OfferHandler(RequestHandler):
             n = int(n)
             offer_ids = list()
 
-            cursor = db.offers.aggregate([
+            cursor = yield db.offers.aggregate([
                 {"$unwind": "$candidates"},
                 {"$group": {"_id": "$_id", "count": {"$sum": 1}}},
                 {"$sort": {"count": -1}},
