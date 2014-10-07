@@ -79,7 +79,7 @@ class OfferHandler(RequestHandler):
                 {"$group": {"_id": "$_id", "count": {"$sum": 1}}},
                 {"$sort": {"count": -1}},
                 {"$limit": n}
-            ], cursor={})
+            ])
 
             while (yield cursor.fetch_next):
                 offer_id = cursor.next_object()
