@@ -74,6 +74,7 @@ class ApplyOfferHandler(RequestHandler):
         db = self.settings["db"]
         users = list()
         ret = dict()
+        search_type = self.get_query_argument("t", default=None)
         
         # is valid uid?
         try:
@@ -83,11 +84,24 @@ class ApplyOfferHandler(RequestHandler):
             return
 
         # do search
-        cursor = db.users.find({
-            "applications": {
-                "$in": [offer_id]
-            }
-        })
+        if search_type == "accepted":
+            cursor = db.users.find({
+                "accepted": {
+                    "$in": [offer_id]
+                }
+            })
+        elif search_type == "rejected":
+            cursor = db.users.find({
+                "rejected": {
+                    "$in": [offer_id]
+                }
+            })
+        else:
+            cursor = db.users.find({
+                "applications": {
+                    "$in": [offer_id]
+                }
+            })
 
         while (yield cursor.fetch_next):
             user = cursor.next_object()
@@ -99,6 +113,54 @@ class ApplyOfferHandler(RequestHandler):
         self.set_header('Content-Type', 'application/json')
         self.write(json.dumps(ret, default=jsonhandler.jsonhandler))
         self.finish()
+
+    @gen.coroutine
+    def delete(self, oid):
+        uid = self.get_argument("user_id")
+
+        db = self.settings["db"]
+
+        # verify oid and uid
+        try:
+            oid = ObjectId(oid)
+            uid = ObjectId(uid)
+        except InvalidId:
+            self.send_error(400)
+            return
+
+        # check if offer exists
+        offer = yield db.offers.find_one({"_id": oid})
+        if offer is None:
+            self.send_error(404)
+            return
+
+        # check if user exists
+        user = yield db.users.find_one({"_id": uid})
+        if user is None or user["type"] == "b":
+            self.send_error(412)
+            return
+
+        application_result = yield db.offers.update({
+            "_id": oid
+        }, {"$pull": {
+                "candidates": uid
+            }
+        })
+
+        user_result = yield db.users.update({
+            "_id": uid
+        }, {"$pull": {
+                "applications": oid
+            }
+        })
+
+        new_user = yield db.users.find_one({"_id": uid})
+        # return
+        self.set_status(200)
+        self.set_header('Content-Type', 'application/json')
+        self.write(json.dumps(new_user, default=jsonhandler.jsonhandler))
+        self.finish()
+
 
 class ReviewOfferHandler(RequestHandler):
     @gen.coroutine
