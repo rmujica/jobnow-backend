@@ -76,7 +76,7 @@ class OfferHandler(RequestHandler):
             today = datetime.datetime.today()
 
             cursor = yield db.offers.aggregate([
-                {"$match": {"end_date": {"$lte": today}}},
+                {"$match": {"end_date": {"$gte": today}}},
                 {"$unwind": "$candidates"},
                 {"$group": {"_id": "$_id", "count": {"$sum": 1}}},
                 {"$sort": {"count": -1}},
