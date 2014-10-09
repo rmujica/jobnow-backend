@@ -73,8 +73,10 @@ class OfferHandler(RequestHandler):
         if n is not None:
             n = int(n)
             offer_ids = list()
+            today = datetime.datetime.today()
 
             cursor = yield db.offers.aggregate([
+                {"$match": {"end_date": {"$lte": today}}},
                 {"$unwind": "$candidates"},
                 {"$group": {"_id": "$_id", "count": {"$sum": 1}}},
                 {"$sort": {"count": -1}},
