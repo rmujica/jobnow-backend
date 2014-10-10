@@ -143,14 +143,18 @@ class ApplyOfferHandler(RequestHandler):
         application_result = yield db.offers.update({
             "_id": oid
         }, {"$pull": {
-                "candidates": uid
+                "candidates": uid,
+                "accepted": uid,
+                "rejected": uid
             }
         })
 
         user_result = yield db.users.update({
             "_id": uid
         }, {"$pull": {
-                "applications": oid
+                "applications": oid,
+                "accepted": oid,
+                "rejected": oid
             }
         })
 
