@@ -25,6 +25,7 @@ class OfferHandler(RequestHandler):
         offer["end_date"]          = datetime.datetime.strptime(self.get_argument("end_date"), "%d/%m/%Y")
         offer["lat"]               = self.get_argument("lat")
         offer["lng"]               = self.get_argument("lng")
+        offer["loc"] = [float(offer["lat"]), float(offer["lng"])]
 
         # is valid user id?
         try:
@@ -65,6 +66,14 @@ class OfferHandler(RequestHandler):
         search = self.get_query_argument("q", default=None)
         uid = self.get_query_argument("u", default=None)
         n = self.get_query_argument("n", default=None)
+        latlng = self.get_query_argument("l", default=None)
+        lat = None
+        lng = None
+        if latlng is not None:
+            lat, lng = latlng.split(",")
+            lat = float(lat)
+            lng = float(lng)
+
         offers = list()
         ret    = dict()
         db     = self.settings["db"]
@@ -96,13 +105,27 @@ class OfferHandler(RequestHandler):
                 offer = cursor.next_object()
                 offers.append(offer)
 
-        elif search is None and uid is None:
+        elif latlng is not None:
+            cursor = db.offers.find({
+                "loc": {
+                    "$near": [lat, lng]
+                }
+            })
+
+            while (yield cursor.fetch_next):
+                offer = cursor.next_object()
+                offers.append(offer)
+            ret["search_terms"].extend([lat, lng])
+
+        elif search is None and uid is None and n is None and latlng is None:
             # get all offers
             cursor = db.offers.find()
 
             while (yield cursor.fetch_next):
                 offer = cursor.next_object()
                 offers.append(offer)
+
+            ret["search_terms"].extend(["all"])
         else:
             if search is not None:
                 # create search terms
