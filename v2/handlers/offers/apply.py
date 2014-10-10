@@ -116,7 +116,7 @@ class ApplyOfferHandler(RequestHandler):
 
     @gen.coroutine
     def delete(self, oid):
-        uid = self.get_argument("user_id")
+        uid = self.get_query_argument("u", "user_id")
 
         db = self.settings["db"]
 
