@@ -27,3 +27,42 @@ class SearchUserHandler(RequestHandler):
         self.set_header('Content-Type', 'application/json')
         self.write(json.dumps(user, default=jsonhandler.jsonhandler))
         self.finish()
+
+    @gen.coroutine
+    def put(self, uid):
+        ret = dict()
+        user = dict()
+        user["first_name"] = self.get_argument("first_name", default=None)
+        user["last_name"] = self.get_argument("last_name", default=None)
+        user["birth_date"] = self.get_argument("birth_date", default=None)
+        user["location"] = self.get_argument("location", default=None)
+        user["occupation"] = self.get_argument("occupation", default=None)
+        user["facebook_user"] = self.get_argument("facebook_user", default=None)
+
+        db = self.settings["db"]
+
+        # validate uid
+        try:
+            _id = ObjectId(uid)
+        except InvalidId:
+            self.send_error(400)
+            return
+
+        updated_user = dict()
+        for k, v in user.items():
+            if v is not None:
+                if k == "birth_date":
+                    updated_user[k] = datetime.datetime.strptime(user[k], "%d/%m/%Y")
+                else:
+                    updated_user[k] = user[k]
+
+        # do update
+        result = yield db.users.update({"_id": _id}, {"$set": updated_user})
+
+        # return offers
+        ret["result"] = yield db.users.find_one({"_id": _id})
+        self.set_status(200)
+        self.set_header('Content-Type', 'application/json')
+        self.write(json.dumps(ret, default=jsonhandler.jsonhandler))
+        self.finish()
+
