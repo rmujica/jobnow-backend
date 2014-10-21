@@ -35,7 +35,7 @@ class MessageHandler(RequestHandler):
         msg["To"] = to_user["email"]
         text = "<p>Hola loquillo</p>"
         text += "<p>" + from_user["email"] + " se tiro un peo en tu cara</p>"
-        if message not None:
+        if message is not None:
             text += "<p>" + message + "<p>"
         part1 = MIMEText(text, "html")
         username = os.environ["MANDRILL_USERNAME"]
