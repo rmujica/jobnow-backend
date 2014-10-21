@@ -13,7 +13,7 @@ import helpers.json as jsonhandler
 class MessageHandler(RequestHandler):
     @gen.coroutine
     def post(self, from_uid, to_uid):
-        message = self.get_argument("message", default="holiwi")
+        message = self.get_argument("message", default=None)
 
         # verify users id
         try:
@@ -34,7 +34,9 @@ class MessageHandler(RequestHandler):
         msg["From"] = from_user["email"]
         msg["To"] = to_user["email"]
         text = "<p>Hola loquillo</p>"
-        text += "<p>" + from_user["username"] + "se tiro un peo en tu cara</p>"
+        text += "<p>" + from_user["email"] + " se tiro un peo en tu cara</p>"
+        if message not None:
+            text += "<p>" + message + "<p>"
         part1 = MIMEText(text, "html")
         username = os.environ["MANDRILL_USERNAME"]
         password = os.environ["MANDRILL_APIKEY"]
