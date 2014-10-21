@@ -17,8 +17,8 @@ class MessageHandler(RequestHandler):
 
         # verify users id
         try:
-            from_uid = ObjectId(from_id)
-            to_uid = ObjectId(to_id)
+            from_uid = ObjectId(from_uid)
+            to_uid = ObjectId(to_uid)
         except InvalidId:
             self.send_error(400)
             return
