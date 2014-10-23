@@ -13,6 +13,7 @@ import v2.handlers.users.message
 import v2.handlers.offers.offer
 import v2.handlers.offers.apply
 import v2.handlers.offers.search
+import v2.handlers.offers.reports
 
 # system routes
 routes = [
