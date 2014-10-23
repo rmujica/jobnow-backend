@@ -35,6 +35,7 @@ class ReportsHandler(RequestHandler):
             return
 
         # add report to offer
+        report = dict()
         report["user_id"] = user_id
         report["message"] = report_text
         offer_update = yield db.offers.update({
