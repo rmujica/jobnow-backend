@@ -1,4 +1,5 @@
 import json
+import datetime
 
 from tornado.web import RequestHandler
 from tornado import gen
@@ -32,12 +33,6 @@ class SearchUserHandler(RequestHandler):
     def put(self, uid):
         ret = dict()
         user = dict()
-        user["first_name"] = self.get_argument("first_name", default=None)
-        user["last_name"] = self.get_argument("last_name", default=None)
-        user["birth_date"] = self.get_argument("birth_date", default=None)
-        user["location"] = self.get_argument("location", default=None)
-        user["occupation"] = self.get_argument("occupation", default=None)
-        user["facebook_user"] = self.get_argument("facebook_user", default=None)
 
         db = self.settings["db"]
 
@@ -47,6 +42,22 @@ class SearchUserHandler(RequestHandler):
         except InvalidId:
             self.send_error(400)
             return
+
+        # does user exist?
+        existing_user = yield db.users.find_one({"_id": _id})
+        if not existing_user:
+            self.send_error(400)
+            return
+
+        if existing_user["type"] == "u": 
+            user["first_name"] = self.get_argument("first_name", default=None)
+            user["last_name"] = self.get_argument("last_name", default=None)
+            user["birth_date"] = self.get_argument("birth_date", default=None)
+            user["location"] = self.get_argument("location", default=None)
+            user["occupation"] = self.get_argument("occupation", default=None)
+            user["facebook_user"] = self.get_argument("facebook_user", default=None)
+        elif existing_user["type"] == "b":
+            pass
 
         updated_user = dict()
         for k, v in user.items():
