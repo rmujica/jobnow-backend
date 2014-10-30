@@ -57,7 +57,9 @@ class SearchUserHandler(RequestHandler):
             user["occupation"] = self.get_argument("occupation", default=None)
             user["facebook_user"] = self.get_argument("facebook_user", default=None)
         elif existing_user["type"] == "b":
-            pass
+            user["business_name"] = self.get_argument("business_name", default=None)
+            user["address"] = self.get_argument("address", default=None)
+            user["phone"] = self.get_argument("phone", default=None)
 
         updated_user = dict()
         for k, v in user.items():
