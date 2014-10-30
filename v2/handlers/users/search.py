@@ -61,6 +61,8 @@ class SearchUserHandler(RequestHandler):
             user["address"] = self.get_argument("address", default=None)
             user["phone"] = self.get_argument("phone", default=None)
 
+        user["status"] = self.get_argument("status", default=None)
+
         updated_user = dict()
         for k, v in user.items():
             if v is not None:

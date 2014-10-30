@@ -14,6 +14,9 @@ class UserHandler(RequestHandler):
         user["password"]     = self.get_argument("password")
         user["applications"] = list()
         user["offers"]       = list()
+        user["status"]       = 0
+        user["rating"]       = 0
+        user["ratings"]      = list()
 
         search = {
             "email": user["email"],
