@@ -15,6 +15,7 @@ import v2.handlers.offers.offer
 import v2.handlers.offers.apply
 import v2.handlers.offers.search
 import v2.handlers.offers.reports
+import v2.handlers.reports.reports
 
 # system routes
 routes = [
@@ -30,6 +31,7 @@ routes = [
     url(r"/v2/offers/(\w+)/applications", v2.handlers.offers.apply.ApplyOfferHandler),
     url(r"/v2/offers/(\w+)/applications/(\w+)", v2.handlers.offers.apply.ReviewOfferHandler),
     url(r"/v2/offers/(\w+)/reports", v2.handlers.offers.reports.ReportsHandler),
+    url(r"/v2/reports", v2.handlers.reports.reports.ReportsHandler),
 ]
 
 # mongo init
