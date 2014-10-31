@@ -11,6 +11,7 @@ class ReportsHandler(RequestHandler):
     @gen.coroutine
     def post(self, oid):
         reporting_user = self.get_argument("user_id")
+        report_type = self.get_argument("type")
         report_text = self.get_argument("message")
 
         db = self.settings["db"]
@@ -37,6 +38,7 @@ class ReportsHandler(RequestHandler):
         # add report to offer
         report = dict()
         report["user_id"] = user_id
+        report["type"] = report_type
         report["message"] = report_text
         offer_update = yield db.offers.update({
             "_id": offer_id
