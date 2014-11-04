@@ -66,7 +66,7 @@ class OfferHandler(RequestHandler):
     def get(self):
         search = self.get_query_argument("q", default=None)
         uid = self.get_query_argument("u", default=None)
-        accepted_and_rejected = self.get_query_argument("ar", default=None)
+        ar = self.get_query_argument("ar", default=None)
         n = self.get_query_argument("n", default=None)
         latlng = self.get_query_argument("l", default=None)
         lat = None
