@@ -154,7 +154,7 @@ class OfferHandler(RequestHandler):
                     return
             
                 # create search term
-                ret["search_terms"].extend(user_id)
+                ret["search_terms"].extend([user_id])
 
                 # do search
                 if ar:
