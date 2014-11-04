@@ -169,8 +169,7 @@ class OfferHandler(RequestHandler):
                     })
 
                 while (yield cursor.fetch_next):
-                    offer = cursor.next_object()
-                    offers.append(offer)
+                    offers.append(cursor.next_object())
 
         # return offers
         ret["result"] = offers
