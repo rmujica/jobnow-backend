@@ -158,18 +158,21 @@ class OfferHandler(RequestHandler):
 
                 # do search
                 if ar:
-                    cursor = db.offers.find({ {"$or": [
-                        "candidates": user_id,
-                        "accepted": user_id,
-                        "rejected": user_id
-                    ]}})
+                    cursor = db.offers.find(
+                        {"$or": [
+                            {"candidates": user_id},
+                            {"accepted": user_id},
+                            {"rejected": user_id}
+                        ]
+                    })
                 else:
                     cursor = db.offers.find({
                         "candidates": user_id
                     })
 
                 while (yield cursor.fetch_next):
-                    offers.append(cursor.next_object())
+                    offer = cursor.next_object()
+                    offers.append(offer)
 
         # return offers
         ret["result"] = offers
