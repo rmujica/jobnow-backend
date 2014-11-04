@@ -26,6 +26,7 @@ class OfferHandler(RequestHandler):
         offer["lat"]               = self.get_argument("lat")
         offer["lng"]               = self.get_argument("lng")
         offer["loc"] = [float(offer["lat"]), float(offer["lng"])]
+        offer["active"] = True
 
         # is valid user id?
         try:
@@ -65,6 +66,7 @@ class OfferHandler(RequestHandler):
     def get(self):
         search = self.get_query_argument("q", default=None)
         uid = self.get_query_argument("u", default=None)
+        accepted_and_rejected = self.get_query_argument("ar", default=None)
         n = self.get_query_argument("n", default=None)
         latlng = self.get_query_argument("l", default=None)
         lat = None
@@ -155,9 +157,16 @@ class OfferHandler(RequestHandler):
                 ret["search_terms"].extend(user_id)
 
                 # do search
-                cursor = db.offers.find({
-                    "candidates": user_id
-                })
+                if ar:
+                    cursor = db.offers.find({
+                        "candidates": user_id,
+                        "accepted": user_id,
+                        "rejected": user_id
+                    })
+                else:
+                    cursor = db.offers.find({
+                        "candidates": user_id
+                    })
 
                 while (yield cursor.fetch_next):
                     offer = cursor.next_object()
