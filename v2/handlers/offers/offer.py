@@ -157,15 +157,15 @@ class OfferHandler(RequestHandler):
                 ret["search_terms"].extend([user_id])
 
                 # do search
+                cursor = db.offers.find({
+                    "candidates": user_id
+                })
+
                 if ar:
                     cursor = db.offers.find({
                         "candidates": user_id,
                         "accepted": user_id,
                         "rejected": user_id
-                    })
-                else:
-                    cursor = db.offers.find({
-                        "candidates": user_id
                     })
 
                 while (yield cursor.fetch_next):
