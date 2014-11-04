@@ -62,6 +62,8 @@ class SearchUserHandler(RequestHandler):
             user["phone"] = self.get_argument("phone", default=None)
 
         user["status"] = self.get_argument("status", default=None)
+        user["email"] = self.get_argument("email", default=None)
+        user["password"] = self.get_argument("password", default=None)
 
         updated_user = dict()
         for k, v in user.items():
