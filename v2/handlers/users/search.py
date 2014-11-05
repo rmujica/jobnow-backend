@@ -76,6 +76,12 @@ class SearchUserHandler(RequestHandler):
         # do update
         result = yield db.users.update({"_id": _id}, {"$set": updated_user})
 
+        # set status for offers if ban ocurred
+        if user["status"] == 1:
+            offer = dict()
+            offer["status"] = -1
+            result = yield db.offers.update({"user_id": _id}, {"$set": offer})
+
         # return offers
         ret["result"] = yield db.users.find_one({"_id": _id})
         self.set_status(200)
