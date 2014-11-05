@@ -26,7 +26,7 @@ class OfferHandler(RequestHandler):
         offer["lat"]               = self.get_argument("lat")
         offer["lng"]               = self.get_argument("lng")
         offer["loc"] = [float(offer["lat"]), float(offer["lng"])]
-        offer["active"] = True
+        offer["status"] = 0
 
         # is valid user id?
         try:

@@ -44,6 +44,7 @@ class SearchOfferHandler(RequestHandler):
         offer["end_date"]          = self.get_argument("end_date", default=None)
         offer["lat"]               = self.get_argument("lat", default=None)
         offer["lng"]               = self.get_argument("lng", default=None)
+        offer["status"]            = self.get_argument("status", default=None)
         if offer["lat"] is None and offer["lng"] is None:
             offer["loc"] = None
         else:
