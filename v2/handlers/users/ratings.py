@@ -55,6 +55,16 @@ class RatingsHandler(RequestHandler):
             }
         })
 
+        my_rated_user = yield db.users.update({"_id": rater_id}, {
+            "$push": {
+                "my_ratings": {
+                    "rated_id": uid,
+                    "offer_id": offer_id,
+                    "rating": new_rating
+                }
+            }
+        })
+
         # return updated rating
         updated_user = yield db.users.find_one({"_id": uid})
 

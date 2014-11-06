@@ -17,6 +17,7 @@ class UserHandler(RequestHandler):
         user["status"]       = 0
         user["rating"]       = 0
         user["ratings"]      = list()
+        user["my_ratings"]   = list()
 
         search = {
             "email": user["email"],
