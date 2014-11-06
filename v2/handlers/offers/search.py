@@ -93,6 +93,7 @@ class SearchOfferHandler(RequestHandler):
         result = yield db.offers.remove({"_id": offer_id})
 
         # return offers
+        ret = dict()
         ret["result"] = {}
         self.set_status(200)
         self.set_header('Content-Type', 'application/json')
